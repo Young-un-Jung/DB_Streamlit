@@ -4,7 +4,7 @@ import os
 
 # 1. 페이지 설정
 st.set_page_config(page_title="DuckDB 뷰어", layout="wide")
-st.title("📱 내 데이터 조회 (GitHub 연동)")
+st.title("📱 Madang_DB 조회 (GitHub 연동)")
 
 # 2. DB 연결 (메모리 모드)
 con = duckdb.connect(database=':memory:')
@@ -44,7 +44,7 @@ try:
 except:
     default_query = "SELECT 1;"
 
-user_query = st.text_area("SQL 입력", value=default_query, height=100)
+user_query = st.text_area("SQL 쿼리문 입력", value=default_query, height=100)
 
 if st.button("🔍 실행 (Run)", type="primary"):
     try:
