@@ -1,3 +1,12 @@
+/* DuckDB용 초기화 스크립트 (수정완료) */
+
+-- 1. 기존 테이블 정리
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS Book;
+DROP TABLE IF EXISTS Customer;
+DROP TABLE IF EXISTS Imported_Book; 
+
+-- 2. 테이블 생성
 CREATE TABLE Book (
   bookid      INTEGER PRIMARY KEY,
   bookname    VARCHAR(40),
@@ -5,7 +14,7 @@ CREATE TABLE Book (
   price       INTEGER 
 );
 
-CREATE TABLE  Customer (
+CREATE TABLE Customer (
   custid      INTEGER PRIMARY KEY,  
   name        VARCHAR(40),
   address     VARCHAR(50),
@@ -14,14 +23,15 @@ CREATE TABLE  Customer (
 
 CREATE TABLE Orders (
   orderid INTEGER PRIMARY KEY,
-  custid  INTEGER ,
-  bookid  INTEGER ,
-  saleprice INTEGER ,
+  custid  INTEGER,
+  bookid  INTEGER,
+  saleprice INTEGER,
   orderdate DATE,
   FOREIGN KEY (custid) REFERENCES Customer(custid),
   FOREIGN KEY (bookid) REFERENCES Book(bookid)
 );
- 
+
+-- 3. 데이터 입력 (Book, Customer)
 INSERT INTO Book VALUES(1, '축구의 역사', '굿스포츠', 7000);
 INSERT INTO Book VALUES(2, '축구아는 여자', '나무수', 13000);
 INSERT INTO Book VALUES(3, '축구의 이해', '대한미디어', 22000);
@@ -39,23 +49,26 @@ INSERT INTO Customer VALUES (3, '장미란', '대한민국 강원도', '000-7000
 INSERT INTO Customer VALUES (4, '추신수', '미국 클리블랜드', '000-8000-0001');
 INSERT INTO Customer VALUES (5, '박세리', '대한민국 대전',  NULL);
 
-INSERT INTO Orders VALUES (1, 1, 1, 6000, STR_TO_DATE('2014-07-01','%Y-%m-%d')); 
-INSERT INTO Orders VALUES (2, 1, 3, 21000, STR_TO_DATE('2014-07-03','%Y-%m-%d'));
-INSERT INTO Orders VALUES (3, 2, 5, 8000, STR_TO_DATE('2014-07-03','%Y-%m-%d')); 
-INSERT INTO Orders VALUES (4, 3, 6, 6000, STR_TO_DATE('2014-07-04','%Y-%m-%d')); 
-INSERT INTO Orders VALUES (5, 4, 7, 20000, STR_TO_DATE('2014-07-05','%Y-%m-%d'));
-INSERT INTO Orders VALUES (6, 1, 2, 12000, STR_TO_DATE('2014-07-07','%Y-%m-%d'));
-INSERT INTO Orders VALUES (7, 4, 8, 13000, STR_TO_DATE( '2014-07-07','%Y-%m-%d'));
-INSERT INTO Orders VALUES (8, 3, 10, 12000, STR_TO_DATE('2014-07-08','%Y-%m-%d')); 
-INSERT INTO Orders VALUES (9, 2, 10, 7000, STR_TO_DATE('2014-07-09','%Y-%m-%d')); 
-INSERT INTO Orders VALUES (10, 3, 8, 13000, STR_TO_DATE('2014-07-10','%Y-%m-%d'));
+-- 4. [중요] Orders 데이터 입력 (여기서 에러가 났던 겁니다!)
+-- STR_TO_DATE(...) 부분을 싹 지우고 날짜 문자열만 남겼습니다.
+INSERT INTO Orders VALUES (1, 1, 1, 6000, '2014-07-01'); 
+INSERT INTO Orders VALUES (2, 1, 3, 21000, '2014-07-03');
+INSERT INTO Orders VALUES (3, 2, 5, 8000, '2014-07-03'); 
+INSERT INTO Orders VALUES (4, 3, 6, 6000, '2014-07-04'); 
+INSERT INTO Orders VALUES (5, 4, 7, 20000, '2014-07-05');
+INSERT INTO Orders VALUES (6, 1, 2, 12000, '2014-07-07');
+INSERT INTO Orders VALUES (7, 4, 8, 13000, '2014-07-07');
+INSERT INTO Orders VALUES (8, 3, 10, 12000, '2014-07-08'); 
+INSERT INTO Orders VALUES (9, 2, 10, 7000, '2014-07-09'); 
+INSERT INTO Orders VALUES (10, 3, 8, 13000, '2014-07-10');
 
--- 여기는 3장에서 사용되는 Imported_book 테이블
+-- 5. Imported_Book 테이블
 CREATE TABLE Imported_Book (
   bookid      INTEGER,
   bookname    VARCHAR(40),
   publisher   VARCHAR(40),
   price       INTEGER 
 );
+
 INSERT INTO Imported_Book VALUES(21, 'Zen Golf', 'Pearson', 12000);
 INSERT INTO Imported_Book VALUES(22, 'Soccer Skills', 'Human Kinetics', 15000);
