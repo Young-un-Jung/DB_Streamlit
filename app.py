@@ -94,7 +94,7 @@ with tab1:
                 WHERE o.custid = ?
                 ORDER BY o.orderdate DESC
             """
-            df_history = con.execute(history_sql, [cust_info['custid']]).df()
+            df_history = con.execute(history_sql, [int(cust_info['custid'])]).df()
             
             if not df_history.empty:
                 st.dataframe(df_history, use_container_width=True, hide_index=True)
